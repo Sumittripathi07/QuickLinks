@@ -3,19 +3,40 @@ import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export function Form() {
   const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
-  const [generated, setGenerated] = useState(false);
+  const [generated, setGenerated] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted");
+
+    let headersList = {
+      Accept: "*/*",
+      "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+      "Content-Type": "application/json",
+    };
+
+    let bodyContent = JSON.stringify({
+      url: url,
+      shortUrl: shortUrl,
+    });
+
+    let response = await fetch("/api/generate", {
+      method: "POST",
+      body: bodyContent,
+      headers: headersList,
+    });
+
+    let data = await response.json();
+    console.log(data);
+    alert(data.message);
+    data && setGenerated(`${process.env.NEXT_PUBLIC_HOST}/${shortUrl}`);
+
     setUrl("");
     setShortUrl("");
-    console.log(url);
-    console.log(shortUrl);
   };
   return (
     <div className="w-full max-w-md p-4 mx-auto rounded-none bg-slate-300 md:rounded-2xl md:p-8 shadow-input dark:bg-black">
@@ -28,6 +49,7 @@ export function Form() {
             onChange={(e) => {
               setUrl(e.target.value);
             }}
+            required
             placeholder="https://www.google.com/"
             type="text"
           />
@@ -39,6 +61,7 @@ export function Form() {
             placeholder="google"
             type="text"
             value={shortUrl}
+            required
             onChange={(e) => {
               setShortUrl(e.target.value);
             }}
@@ -55,6 +78,27 @@ export function Form() {
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
       </form>
+      {generated && (
+        <code>
+          Your Link:{" "}
+          <Link
+            className="text-white bg-slate-800"
+            href={generated}
+            target="_blank"
+          >
+            {generated}{" "}
+          </Link>
+        </code>
+      )}
+      {/* {generated && (
+        <input
+          type="text"
+          className="col-span-6  w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          value={generated}
+          disabled
+          readOnly
+        />
+      )} */}
     </div>
   );
 }
