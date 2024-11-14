@@ -5,15 +5,17 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 export function Form() {
-  const [original, setOriginal] = useState("");
-  const [short, setShort] = useState("");
+  const [url, setUrl] = useState("");
+  const [shortUrl, setShortUrl] = useState("");
+  const [generated, setGenerated] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted");
-    setOriginal("");
-    console.log(original);
-    console.log(short);
+    setUrl("");
+    setShortUrl("");
+    console.log(url);
+    console.log(shortUrl);
   };
   return (
     <div className="w-full max-w-md p-4 mx-auto rounded-none bg-slate-300 md:rounded-2xl md:p-8 shadow-input dark:bg-black">
@@ -22,9 +24,9 @@ export function Form() {
           <Label htmlFor="text">Original Link</Label>
           <Input
             id="text"
-            value={original}
+            value={url}
             onChange={(e) => {
-              setOriginal(e.target.value);
+              setUrl(e.target.value);
             }}
             placeholder="https://www.google.com/"
             type="text"
@@ -36,9 +38,9 @@ export function Form() {
             id="text"
             placeholder="google"
             type="text"
-            value={short}
+            value={shortUrl}
             onChange={(e) => {
-              setShort(e.target.value);
+              setShortUrl(e.target.value);
             }}
           />
         </LabelInputContainer>
