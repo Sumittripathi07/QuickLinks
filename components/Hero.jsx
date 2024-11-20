@@ -27,7 +27,7 @@ export default function Hero() {
             </Highlight>
           </div>
           <div className="py-4 text-base font-extralight md:text-4xl dark:text-neutral-200">
-            with QuickLink
+            with QuickLinks
           </div>
           <Link href={"/generate"}>
             <button className="px-4 py-2 text-white bg-black rounded-full dark:bg-white w-fit dark:text-black">
